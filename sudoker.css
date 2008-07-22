@@ -49,7 +49,10 @@ td[given] {
 	}
 
 td[pencil] {
+	color: lightgrey;
+	}
+td[pencil][selected] {
 	color: grey;
-	};
+	}
 
 
