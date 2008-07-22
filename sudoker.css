@@ -40,16 +40,8 @@ td.cell {
 	empty-cells: show;
 	}
 
-td.selected-cell {
-	width: 50pt;
-	height: 50pt;
+td[selected] {
 	background-color: lightblue;
-	border-width: 1px;
-	border-color: black;
-	border-style: solid;
-	margin: 0;
-	padding: 0;
-	text-align: center;
-	empty-cells: show;
 	}
+
 

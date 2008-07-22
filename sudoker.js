@@ -52,9 +52,9 @@ function handle_key(event) {
 
 
 function selected_cell_changed() {
-	selectedCell.setAttribute("class", "cell");
+	selectedCell.removeAttribute("selected");
 	selectedCell = grid[selectedRow][selectedCol];
-	selectedCell.setAttribute("class", "selected-cell");
+	selectedCell.setAttribute("selected", "true");
 }
 
 
@@ -73,15 +73,15 @@ function sudoker_start() {
 	for (var i = 0; i < tds.length; ++i) {
 		td = tds[i];
 		tdClass = td.getAttribute("class");
-		if (tdClass == "cell" || tdClass == "selected-cell") {
+		if (tdClass == "cell") {
 			var row = boxRow * 3 + cellRow;
 			var col = boxCol * 3 + cellCol;
-			if (tdClass == "selected-cell") {
-				selectedCell = td;
+			grid[row][col] = td;
+			if (td.getAttribute("selected")) {
 				selectedRow = row;
 				selectedCol = col;
+				selectedCell = td;
 				}
-			grid[row][col] = td;
 			cellCol += 1;
 			if (cellCol >= 3) {
 				cellCol = 0;
