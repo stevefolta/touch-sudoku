@@ -1,5 +1,5 @@
 html {
-	font-family: "Arial Black";
+	font-family: "sans-serif";
 	}
 
 table.grid {
@@ -43,5 +43,13 @@ td.cell {
 td[selected] {
 	background-color: lightblue;
 	}
+
+td[given] {
+	font-family: "Arial Black";
+	}
+
+td[pencil] {
+	color: grey;
+	};
 
 

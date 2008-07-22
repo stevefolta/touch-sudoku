@@ -1,10 +1,11 @@
 var puzzle =
 	"1 82     \n  6     7\n   1 6 3 \n 4  5   9\n 7 4 8 2 \n6   3  7 \n 5 8 1   \n2     8  \n     95 2";
 
-var selectedCell = null;
 var grid = null;
+var selectedCell = null;
 var selectedRow = 0;
 var selectedCol = 0;
+var selectedUsedKey = false;
 
 
 function handle_key(event) {
@@ -14,34 +15,36 @@ function handle_key(event) {
 	var handled = false;
 
 	var key = event.keyCode;
-	if (key == 88) { 	// 'X'
-		alert("X key.");
-		handled = true;
-		}
-
-	else if (key == 74) { 	// 'J'
-		selectedRow = (selectedRow + 1) % 9;
-		selected_cell_changed();
-		handled = true;
-		}
-	else if (key == 75) { 	// 'K'
-		selectedRow -= 1;
-		if (selectedRow < 0)
-			selectedRow = 8;
-		selected_cell_changed();
-		handled = true;
-		}
-	else if (key == 72) { 	// 'H'
-		selectedCol -= 1;
-		if (selectedCol < 0)
-			selectedCol = 8;
-		selected_cell_changed();
-		handled = true;
-		}
-	else if (key == 76) { 	// 'L'
-		selectedCol = (selectedCol + 1) % 9;
-		selected_cell_changed();
-		handled = true;
+	switch (key) {
+		case 74: 	// 'J'
+			selectedRow = (selectedRow + 1) % 9;
+			selected_cell_changed();
+			handled = true;
+			break;
+		case 75: 	// 'K'
+			selectedRow -= 1;
+			if (selectedRow < 0)
+				selectedRow = 8;
+			selected_cell_changed();
+			handled = true;
+			break;
+		case 72: 	// 'H'
+			selectedCol -= 1;
+			if (selectedCol < 0)
+				selectedCol = 8;
+			selected_cell_changed();
+			handled = true;
+			break;
+		case 76: 	// 'L'
+			selectedCol = (selectedCol + 1) % 9;
+			selected_cell_changed();
+			handled = true;
+			break;
+		case 48:  case 49:  case 50:  case 51:  case 52:
+		case 53:  case 54:  case 55:  case 56:  case 57:
+			digit_pressed(key - 48);
+			handled = true;
+			break;
 		}
 
 	if (handled) {
@@ -51,10 +54,38 @@ function handle_key(event) {
 }
 
 
+function digit_pressed(digit) {
+	if (selectedCell.getAttribute("given"))
+		return;
+
+	var str = (digit + 48).toString(16);
+	if (str.length == 1)
+		str = "0" + str;
+	str = unescape("%" + str);
+	if (!selectedUsedKey) {
+		selectedCell.textContent = str;
+		selectedUsedKey = true;
+		}
+	else
+		selectedCell.textContent += str;
+
+	check_pencil();
+}
+
+
+function check_pencil() {
+	if (selectedCell.textContent.length > 1)
+		selectedCell.setAttribute("pencil", "true");
+	else
+		selectedCell.removeAttribute("pencil");
+}
+
+
 function selected_cell_changed() {
 	selectedCell.removeAttribute("selected");
 	selectedCell = grid[selectedRow][selectedCol];
 	selectedCell.setAttribute("selected", "true");
+	selectedUsedKey = false;
 }
 
 
@@ -108,8 +139,10 @@ function sudoker_start() {
 			col = 0;
 			continue;
 			}
-		if (c != " ")
+		if (c != " ") {
 			grid[row][col].textContent = c;
+			grid[row][col].setAttribute("given", "true");
+			}
 		col += 1;
 		}
 
