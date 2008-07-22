@@ -52,6 +52,11 @@ function handle_key(event) {
 				selectedCell.textContent = "";
 			handled = true;
 			break;
+		case 191: 	// '?' (Really!)
+			check_puzzle();
+			selectedUsedKey = false;
+			handled = true;
+			break;
 		}
 
 	if (handled) {
@@ -96,11 +101,116 @@ function selected_cell_changed() {
 }
 
 
-function sudoker_start() {
+function check_puzzle() {
+	var used = new Array(9);
 
+	// Clear existing errors.
+	for (var row = 0; row < 9; ++row) {
+		for (var col = 0; col < 9; ++col)
+			grid[row][col].removeAttribute("error");
+		}
+
+	// Check the boxes.
+	for (var boxRow = 0; boxRow < 3; ++boxRow) {
+		for (var boxCol = 0; boxCol < 3; ++boxCol) {
+			var boxError = false;
+			for (var i = 0; i < 9; ++i)
+				used[i] = false;
+
+			// Check this box.
+			for (var cellRow = 0; cellRow < 3; ++cellRow) {
+				for (var cellCol = 0; cellCol < 3; ++cellCol) {
+					var digit = digitAt(boxRow * 3 + cellRow, boxCol * 3 + cellCol);
+					if (digit < 0)
+						continue;
+					if (used[digit]) {
+						boxError = true;
+						break;
+						}
+					used[digit] = true;
+					}
+				if (boxError)
+					break;
+				}
+
+			// Mark this box if there was an error.
+			if (boxError) {
+				for (var cellRow = 0; cellRow < 3; ++cellRow) {
+					for (var cellCol = 0; cellCol < 3; ++cellCol)
+						markErrorCell(boxRow * 3 + cellRow, boxCol * 3 + cellCol);
+					}
+				}
+			}
+		}
+
+	// Check the rows.
+	for (var row = 0; row < 9; ++row) {
+		var rowError = false;
+		for (var i = 0; i < 9; ++i)
+			used[i] = false;
+
+		// Check this row.
+		for (var col = 0; col < 9; ++col) {
+			var digit = digitAt(row, col);
+			if (digit < 0)
+				continue;
+			if (used[digit]) {
+				rowError = true;
+				break;
+				}
+			used[digit] = true;
+			}
+
+		// Mark this row if there was an error.
+		if (rowError) {
+			for (var col = 0; col < 9; ++col)
+				markErrorCell(row, col);
+			}
+		}
+
+	// Check the columns.
+	for (var col = 0; col < 9; ++col) {
+		var colError = false;
+		for (var i = 0; i < 9; ++i)
+			used[i] = false;
+
+		// Check this column.
+		for (var row = 0; row < 9; ++row) {
+			var digit = digitAt(row, col);
+			if (digit < 0)
+				continue;
+			if (used[digit]) {
+				colError = true;
+				break;
+				}
+			used[digit] = true;
+			}
+
+		// Mark this column if there is an error.
+		if (colError) {
+			for (var row = 0; row < 9; ++row)
+				markErrorCell(row, col);
+			}
+		}
+}
+
+function digitAt(row, col) {
+	var entry = grid[row][col].textContent;
+	if (entry.length != 1)
+		return -1;
+	return parseInt(entry) - 1;
+}
+
+function markErrorCell(row, col) {
+	var cell = grid[row][col];
+	cell.setAttribute("error", "true");
+}
+
+
+function sudoker_start() {
 	// Create the grid.
 	grid = new Array(9);
-	for (row = 0; row < 9; ++row) {
+	for (var row = 0; row < 9; ++row) {
 		grid[row] = new Array(9);
 		}
 	tds = document.getElementsByTagName("td");

@@ -42,6 +42,10 @@ td.cell {
 	font-family: "Arial Black";
 	}
 
+td[error] {
+	background-color: red;
+	}
+
 td[selected] {
 	background-color: lightblue;
 	}
