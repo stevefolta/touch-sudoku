@@ -5,7 +5,9 @@ puzzle =
 puzzle =
 	" 961     \n 839 2 6 \n2      89\n 6      8\n  1   5  \n9      4 \n73      6\n 1 3 687 \n     921 ";
 puzzle =
-	"       7 \n 9 65 3  \n3  1 75 9\n  1  4  7\n 8     4 \n5  2  1  \n2 94 5  6\n  7 69 5 \n 5       ";
+	".......7.\n.9.65.3..\n3..1.75.9\n..1..4..7\n.8.....4.\n5..2..1..\n2.94.5..6\n..7.69.5.\n.5.......";
+puzzle =
+	".45......\n2...146..\n6....27..\n..186..9.\n.........\n.9..732..\n..32....5\n..264...1\n......82.\n";
 
 var grid = null;
 var selectedCell = null;
@@ -260,7 +262,7 @@ function sudoker_start() {
 			col = 0;
 			continue;
 			}
-		if (c != " ") {
+		if (c != " " && c != ".") {
 			grid[row][col].textContent = c;
 			grid[row][col].setAttribute("given", "true");
 			}
