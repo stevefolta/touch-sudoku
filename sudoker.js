@@ -2,6 +2,10 @@ var puzzle =
 	"1 82     \n  6     7\n   1 6 3 \n 4  5   9\n 7 4 8 2 \n6   3  7 \n 5 8 1   \n2     8  \n     95 2";
 puzzle =
 	"  1    42\n4  7     \n2 5 9    \n   6    9\n 7 489 1 \n6    2   \n    3 8 5\n     8  1\n18    6  ";
+puzzle =
+	" 961     \n 839 2 6 \n2      89\n 6      8\n  1   5  \n9      4 \n73      6\n 1 3 687 \n     921 ";
+puzzle =
+	"       7 \n 9 65 3  \n3  1 75 9\n  1  4  7\n 8     4 \n5  2  1  \n2 94 5  6\n  7 69 5 \n 5       ";
 
 var grid = null;
 var selectedCell = null;
