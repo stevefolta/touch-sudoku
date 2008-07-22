@@ -1,5 +1,7 @@
 var puzzle =
 	"1 82     \n  6     7\n   1 6 3 \n 4  5   9\n 7 4 8 2 \n6   3  7 \n 5 8 1   \n2     8  \n     95 2";
+puzzle =
+	"  1    42\n4  7     \n2 5 9    \n   6    9\n 7 489 1 \n6    2   \n    3 8 5\n     8  1\n18    6  ";
 
 var grid = null;
 var selectedCell = null;
