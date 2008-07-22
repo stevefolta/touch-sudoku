@@ -1,0 +1,55 @@
+html {
+	font-family: "Arial Black";
+	}
+
+table.grid {
+	border-width: 3px;
+	border-color: black;
+	border-style: solid;
+	border-collapse: collapse;
+	}
+
+table.box {
+	border-width: 2px;
+	border-color: black;
+	border-style: solid;
+	margin: 0;
+	padding: 0;
+	border-collapse: collapse;
+	}
+
+tr {
+	margin: 0;
+	padding: 0;
+	}
+
+td {
+	margin: 0;
+	padding: 0;
+	}
+
+td.cell {
+	width: 50pt;
+	height: 50pt;
+	border-width: 1px;
+	border-color: black;
+	border-style: solid;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	empty-cells: show;
+	}
+
+td.selected-cell {
+	width: 50pt;
+	height: 50pt;
+	background-color: lightblue;
+	border-width: 1px;
+	border-color: black;
+	border-style: solid;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	empty-cells: show;
+	}
+
