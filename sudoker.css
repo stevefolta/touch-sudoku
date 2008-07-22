@@ -38,6 +38,7 @@ td.cell {
 	padding: 0;
 	text-align: center;
 	empty-cells: show;
+	color: blue;
 	}
 
 td[selected] {
@@ -46,6 +47,7 @@ td[selected] {
 
 td[given] {
 	font-family: "Arial Black";
+	color: black;
 	}
 
 td[pencil] {

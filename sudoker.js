@@ -45,6 +45,10 @@ function handle_key(event) {
 			digit_pressed(key - 48);
 			handled = true;
 			break;
+		case 8: 	// Backspace
+			selectedCell.textContent = "";
+			handled = true;
+			break;
 		}
 
 	if (handled) {
