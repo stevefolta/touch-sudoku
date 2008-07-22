@@ -48,7 +48,8 @@ function handle_key(event) {
 			handled = true;
 			break;
 		case 8: 	// Backspace
-			selectedCell.textContent = "";
+			if (!selectedCell.getAttribute("given"))
+				selectedCell.textContent = "";
 			handled = true;
 			break;
 		}
