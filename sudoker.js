@@ -1,15 +1,5 @@
 var puzzle =
-	"1 82     \n  6     7\n   1 6 3 \n 4  5   9\n 7 4 8 2 \n6   3  7 \n 5 8 1   \n2     8  \n     95 2";
-puzzle =
-	"  1    42\n4  7     \n2 5 9    \n   6    9\n 7 489 1 \n6    2   \n    3 8 5\n     8  1\n18    6  ";
-puzzle =
-	" 961     \n 839 2 6 \n2      89\n 6      8\n  1   5  \n9      4 \n73      6\n 1 3 687 \n     921 ";
-puzzle =
-	".......7.\n.9.65.3..\n3..1.75.9\n..1..4..7\n.8.....4.\n5..2..1..\n2.94.5..6\n..7.69.5.\n.5.......";
-puzzle =
-	".45......\n2...146..\n6....27..\n..186..9.\n.........\n.9..732..\n..32....5\n..264...1\n......82.\n";
-puzzle =
-	"..81.7.6.\n.7..9..3.\n.4.8.65.7\n.....91.6\n2.4...3.5\n1.74.....\n8.57.2.9.\n.2..6..8.\n.3.9.82..\n";
+	"45938.1.2\n.6.5...43\n3..7.4.9.\n.....8.24\n84.....61\n93.4.....\n.2.8.3..9\n69...7.3.\n7.3.49256\n";
 
 var grid = null;
 var selectedCell = null;
@@ -111,6 +101,10 @@ function selected_cell_changed() {
 
 function check_puzzle() {
 	var used = new Array(9);
+	function clear_used() {
+		for (var i = 0; i < 9; ++i)
+			used[i] = false;
+		}
 
 	// Clear existing errors.
 	for (var row = 0; row < 9; ++row) {
@@ -122,8 +116,7 @@ function check_puzzle() {
 	for (var boxRow = 0; boxRow < 3; ++boxRow) {
 		for (var boxCol = 0; boxCol < 3; ++boxCol) {
 			var boxError = false;
-			for (var i = 0; i < 9; ++i)
-				used[i] = false;
+			clear_used();
 
 			// Check this box.
 			for (var cellRow = 0; cellRow < 3; ++cellRow) {
@@ -154,8 +147,7 @@ function check_puzzle() {
 	// Check the rows.
 	for (var row = 0; row < 9; ++row) {
 		var rowError = false;
-		for (var i = 0; i < 9; ++i)
-			used[i] = false;
+		clear_used();
 
 		// Check this row.
 		for (var col = 0; col < 9; ++col) {
@@ -179,8 +171,7 @@ function check_puzzle() {
 	// Check the columns.
 	for (var col = 0; col < 9; ++col) {
 		var colError = false;
-		for (var i = 0; i < 9; ++i)
-			used[i] = false;
+		clear_used();
 
 		// Check this column.
 		for (var row = 0; row < 9; ++row) {
