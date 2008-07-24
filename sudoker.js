@@ -1,5 +1,5 @@
-var puzzle =
-	"45938.1.2\n.6.5...43\n3..7.4.9.\n.....8.24\n84.....61\n93.4.....\n.2.8.3..9\n69...7.3.\n7.3.49256\n";
+var puzzleSrc = "http://somefancy.com/steve/puzzles/krazydad.2008.07.24.1";
+var requestCrossSite = true;
 
 
 var grid = null;
@@ -233,6 +233,60 @@ function won() {
 }
 
 
+function load_puzzle(puzzle) {
+	// Fill in the grid with the puzzle.
+	row = 0;
+	col = 0;
+	for (ci = 0; ci < puzzle.length; ++ci) {
+		c = puzzle.charAt(ci);
+		if (c == "\n") {
+			row += 1;
+			col = 0;
+			continue;
+			}
+		if (c != " " && c != ".") {
+			grid[row][col].textContent = c;
+			grid[row][col].setAttribute("given", "true");
+			}
+		col += 1;
+		}
+
+	// Initial selected cell.
+	selectedRow = 0;
+	selectedCol = 0;
+	selected_cell_changed();
+}
+
+
+function get_puzzle()
+{
+	if (requestCrossSite) {
+		try {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+			}
+		catch (e) {
+			alert("Permission UniversalBrowserRead denied.");
+			}
+		}
+
+	try {
+		var request = new XMLHttpRequest();
+		request.open("GET", puzzleSrc, true);
+		request.onreadystatechange = function () {
+			if (request.readyState == 4) {
+				if (request.status == 200 && request.responseText) {
+					load_puzzle(request.responseText);
+					}
+				}
+			}
+		request.send(null);
+		}
+	catch (error) {
+		alert("Couldn't get the puzzle!");
+		}
+}
+
+
 function sudoker_start() {
 	// Create the grid.
 	grid = new Array(9);
@@ -267,29 +321,9 @@ function sudoker_start() {
 			}
 		}
 
-	// Fill in the grid with the puzzle.
-	row = 0;
-	col = 0;
-	for (ci = 0; ci < puzzle.length; ++ci) {
-		c = puzzle.charAt(ci);
-		if (c == "\n") {
-			row += 1;
-			col = 0;
-			continue;
-			}
-		if (c != " " && c != ".") {
-			grid[row][col].textContent = c;
-			grid[row][col].setAttribute("given", "true");
-			}
-		col += 1;
-		}
-
-	// Initial selected cell.
-	selectedRow = 0;
-	selectedCol = 0;
-	selected_cell_changed();
-
 	document.onkeydown = handle_key;
+
+	get_puzzle();
 }
 
 
