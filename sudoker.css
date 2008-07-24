@@ -40,6 +40,7 @@ td.cell {
 	empty-cells: show;
 	color: blue;
 	font-family: "Arial Black";
+	font-size: 150%;
 	}
 
 td[error] {
