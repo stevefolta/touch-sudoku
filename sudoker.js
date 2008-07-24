@@ -1,4 +1,4 @@
-var puzzleSrc = "http://somefancy.com/steve/puzzles/krazydad.2008.07.24.1";
+var puzzleSrc = "http://somefancy.com/steve/puzzles/current";
 var requestCrossSite = true;
 
 
@@ -15,6 +15,9 @@ function handle_key(event) {
 		event = window.event;
 
 	var handled = false;
+
+	if (event.ctrlKey || event.altKey || event.metaKey)
+		return;
 
 	var key = event.keyCode;
 	switch (key) {
@@ -56,6 +59,11 @@ function handle_key(event) {
 		case 191: 	// '?' (Really!)
 			check_puzzle();
 			selectedUsedKey = false;
+			handled = true;
+			break;
+		case 82: 	// 'R'
+			clear_puzzle();
+			get_puzzle();
 			handled = true;
 			break;
 		}
@@ -283,6 +291,17 @@ function get_puzzle()
 		}
 	catch (error) {
 		alert("Couldn't get the puzzle!");
+		}
+}
+
+function clear_puzzle()
+{
+	for (var row = 0; row < 9; ++row) {
+		for (var col = 0; col < 9; ++col) {
+			grid[row][col].textContent = "";
+			grid[row][col].removeAttribute("given");
+			grid[row][col].removeAttribute("error");
+			}
 		}
 }
 
