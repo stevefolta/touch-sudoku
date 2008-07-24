@@ -92,7 +92,8 @@ function check_pencil() {
 
 
 function selected_cell_changed() {
-	selectedCell.removeAttribute("selected");
+	if (selectedCell)
+		selectedCell.removeAttribute("selected");
 	selectedCell = grid[selectedRow][selectedCol];
 	selectedCell.setAttribute("selected", "true");
 	selectedUsedKey = false;
@@ -224,11 +225,6 @@ function sudoker_start() {
 			var row = boxRow * 3 + cellRow;
 			var col = boxCol * 3 + cellCol;
 			grid[row][col] = td;
-			if (td.getAttribute("selected")) {
-				selectedRow = row;
-				selectedCol = col;
-				selectedCell = td;
-				}
 			cellCol += 1;
 			if (cellCol >= 3) {
 				cellCol = 0;
@@ -261,6 +257,11 @@ function sudoker_start() {
 			}
 		col += 1;
 		}
+
+	// Initial selected cell.
+	selectedRow = 0;
+	selectedCol = 0;
+	selected_cell_changed();
 
 	document.onkeydown = handle_key;
 }
