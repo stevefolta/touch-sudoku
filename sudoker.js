@@ -6,6 +6,7 @@ var selectedCell = null;
 var selectedRow = 0;
 var selectedCol = 0;
 var selectedUsedKey = false;
+var cellsLeft = 0;
 
 
 function handle_key(event) {
@@ -192,7 +193,20 @@ function check_puzzle() {
 				markErrorCell(row, col);
 			}
 		}
+
+	// How many cells left?
+	cellsLeft = 0;
+	for (var row = 0; row < 9; ++row) {
+		for (var col = 0; col < 9; ++col) {
+			var digit = digitAt(row, col);
+			if (digit < 0)
+				cellsLeft += 1;
+			}
+		}
+	if (cellsLeft == 0)
+		won();
 }
+
 
 function digitAt(row, col) {
 	var entry = grid[row][col].textContent;
@@ -204,6 +218,16 @@ function digitAt(row, col) {
 function markErrorCell(row, col) {
 	var cell = grid[row][col];
 	cell.setAttribute("error", "true");
+}
+
+
+function won() {
+	var winRow = "WINWINWIN";
+	for (var row = 0; row < 9; ++row) {
+		for (var col = 0; col < 9; ++col) {
+			grid[row][col].textContent = winRow.charAt(col);
+			}
+		}
 }
 
 
