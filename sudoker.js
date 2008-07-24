@@ -1,6 +1,7 @@
 var puzzle =
 	"45938.1.2\n.6.5...43\n3..7.4.9.\n.....8.24\n84.....61\n93.4.....\n.2.8.3..9\n69...7.3.\n7.3.49256\n";
 
+
 var grid = null;
 var selectedCell = null;
 var selectedRow = 0;
@@ -51,6 +52,7 @@ function handle_key(event) {
 				selectedCell.textContent = "";
 			handled = true;
 			break;
+		case 13:  	// Enter
 		case 191: 	// '?' (Really!)
 			check_puzzle();
 			selectedUsedKey = false;
