@@ -288,7 +288,12 @@ function load_puzzle(puzzle) {
 	mistakes = 0;
 	checks = 0;
 	startTime = new Date();
-	winTime = nil;
+	/***
+	What heinous property of Javascript makes this fail so horribly?:
+		winTime = nil;
+	And why, then, does this work fine?:
+	***/
+	winTime = false;
 	update_time();
 	update_mistakes();
 	update_checks();
@@ -298,6 +303,7 @@ function load_puzzle(puzzle) {
 
 function get_puzzle()
 {
+	set_status("Loading...");
 
 	if (requestCrossSite) {
 		try {
@@ -309,7 +315,6 @@ function get_puzzle()
 		}
 
 	try {
-		set_status("Loading...");
 		var request = new XMLHttpRequest();
 		request.open("GET", puzzleSrc, true);
 		request.onreadystatechange = function () {
