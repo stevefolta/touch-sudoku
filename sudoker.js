@@ -363,6 +363,11 @@ function update_time() {
 		}
 }
 
+function tick() {
+	update_time();
+	window.setTimeout(tick, 500);
+}
+
 
 function sudoker_start() {
 	// Create the grid.
@@ -399,6 +404,7 @@ function sudoker_start() {
 		}
 
 	document.onkeydown = handle_key;
+	tick();
 
 	get_puzzle();
 }
