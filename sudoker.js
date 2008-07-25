@@ -51,17 +51,19 @@ function handle_key(event) {
 			break;
 		case 48:  case 49:  case 50:  case 51:  case 52:
 		case 53:  case 54:  case 55:  case 56:  case 57:
-			digit_pressed(key - 48);
+			if (!winTime)
+				digit_pressed(key - 48);
 			handled = true;
 			break;
 		case 8: 	// Backspace
-			if (!selectedCell.getAttribute("given"))
+			if (!winTime && !selectedCell.getAttribute("given"))
 				selectedCell.textContent = "";
 			handled = true;
 			break;
 		case 13:  	// Enter
 		case 191: 	// '?' (Really!)
-			check_puzzle();
+			if (!winTime)
+				check_puzzle();
 			update_time();
 			selectedUsedKey = false;
 			handled = true;
