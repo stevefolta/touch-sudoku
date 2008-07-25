@@ -9,6 +9,7 @@ var selectedCol = 0;
 var selectedUsedKey = false;
 var cellsLeft = 0;
 var mistakes = 0;
+var checks = 0;
 var startTime = nil;
 
 
@@ -223,11 +224,12 @@ function check_puzzle() {
 	if (cellsLeft == 0 && !hadMistake)
 		won();
 
-	// Keep track of the number of mistakes.
+	// Update status.
 	if (hadMistake) {
 		mistakes += 1;
 		update_mistakes();
 		}
+	checked();
 }
 
 
@@ -281,9 +283,11 @@ function load_puzzle(puzzle) {
 	selected_cell_changed();
 
 	mistakes = 0;
+	checks = 0;
 	startTime = new Date();
 	update_time();
 	update_mistakes();
+	update_checks();
 	set_status("Playing");
 }
 
@@ -336,6 +340,15 @@ function set_status(status) {
 
 function update_mistakes() {
 	document.getElementById("mistakes").textContent = mistakes;
+}
+
+function update_checks() {
+	document.getElementById("checks").textContent = checks;
+}
+
+function checked() {
+	checks += 1;
+	update_checks();
 }
 
 function update_time() {
