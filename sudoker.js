@@ -9,6 +9,7 @@ var selectedCol = 0;
 var selectedUsedKey = false;
 var cellsLeft = 0;
 var mistakes = 0;
+var startTime = nil;
 
 
 function handle_key(event) {
@@ -59,6 +60,7 @@ function handle_key(event) {
 		case 13:  	// Enter
 		case 191: 	// '?' (Really!)
 			check_puzzle();
+			update_time();
 			selectedUsedKey = false;
 			handled = true;
 			break;
@@ -251,6 +253,7 @@ function won() {
 		}
 
 	set_status("Won");
+	update_time();
 }
 
 
@@ -278,6 +281,8 @@ function load_puzzle(puzzle) {
 	selected_cell_changed();
 
 	mistakes = 0;
+	startTime = new Date();
+	update_time();
 	update_mistakes();
 	set_status("Playing");
 }
@@ -331,6 +336,31 @@ function set_status(status) {
 
 function update_mistakes() {
 	document.getElementById("mistakes").textContent = mistakes;
+}
+
+function update_time() {
+	if (!startTime)
+		document.getElementById("time").textContent = "";
+	else {
+		var elapsedTime = Math.floor((new Date() - startTime) / 1000);
+		var str = "";
+		var hours = Math.floor(elapsedTime / (60 * 60));
+		if (hours > 0) {
+			str += hours;
+			str += ":";
+			}
+		elapsedTime -= hours * 60 * 60;
+		var minutes = Math.floor(elapsedTime / 60);
+		if (hours > 0 && minutes < 10)
+			str += "0";
+		str += minutes;
+		str += ":";
+		elapsedTime -= minutes * 60;
+		if (elapsedTime < 10)
+			str += "0";
+		str += elapsedTime;
+		document.getElementById("time").textContent = str;
+		}
 }
 
 
