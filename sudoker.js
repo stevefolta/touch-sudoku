@@ -11,6 +11,7 @@ var cellsLeft = 0;
 var mistakes = 0;
 var checks = 0;
 var startTime = nil;
+var winTime = nil;
 
 
 function handle_key(event) {
@@ -247,6 +248,8 @@ function markErrorCell(row, col) {
 
 
 function won() {
+	winTime = new Date();
+
 	var winRow = "WINWINWIN";
 	for (var row = 0; row < 9; ++row) {
 		for (var col = 0; col < 9; ++col) {
@@ -285,6 +288,7 @@ function load_puzzle(puzzle) {
 	mistakes = 0;
 	checks = 0;
 	startTime = new Date();
+	winTime = nil;
 	update_time();
 	update_mistakes();
 	update_checks();
@@ -294,6 +298,7 @@ function load_puzzle(puzzle) {
 
 function get_puzzle()
 {
+
 	if (requestCrossSite) {
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
@@ -355,7 +360,10 @@ function update_time() {
 	if (!startTime)
 		document.getElementById("time").textContent = "";
 	else {
-		var elapsedTime = Math.floor((new Date() - startTime) / 1000);
+		var endTime = winTime;
+		if (!endTime)
+			endTime = new Date();
+		var elapsedTime = Math.floor((endTime - startTime) / 1000);
 		var str = "";
 		var hours = Math.floor(elapsedTime / (60 * 60));
 		if (hours > 0) {
@@ -377,7 +385,10 @@ function update_time() {
 }
 
 function tick() {
-	update_time();
+/***
+	if (!winTime) 	// No need...
+***/
+		update_time();
 	window.setTimeout(tick, 500);
 }
 
