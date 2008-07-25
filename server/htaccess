@@ -1,0 +1,7 @@
+# An example of an ".htaccess" file (note the dot) for Apache, on the puzzles
+# server.
+
+Header add Cache-Control "no-cache, must-revalidate"
+Options +ExecCGI
+AddHandler cgi-script .cgi
+
