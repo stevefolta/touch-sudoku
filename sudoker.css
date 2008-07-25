@@ -90,5 +90,8 @@ td.info-label {
 td.keys {
 	padding-right: 1em;
 	}
+td[unknown] {
+	font-style: italic;
+	}
 
 

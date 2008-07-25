@@ -1,4 +1,4 @@
-var puzzleSrc = "http://somefancy.com/steve/puzzles/current";
+var puzzleSrc = "http://somefancy.com/touch-sudoku/puzzles/current.cgi";
 var requestCrossSite = true;
 
 
@@ -322,6 +322,11 @@ function get_puzzle()
 		request.onreadystatechange = function () {
 			if (request.readyState == 4) {
 				if (request.status == 200 && request.responseText) {
+					level = request.getResponseHeader("Puzzle-Level");
+					if (level)
+						set_level(level);
+					else
+						set_level("Unknown");
 					load_puzzle(request.responseText);
 					}
 				}
@@ -348,6 +353,15 @@ function clear_puzzle()
 
 function set_status(status) {
 	document.getElementById("status").textContent = status;
+}
+
+function set_level(level) {
+	element = document.getElementById("level");
+	element.textContent = level;
+	if (level == "Unknown")
+		element.setAttribute("unknown", "true");
+	else
+		element.removeAttribute("unknown");
 }
 
 function update_mistakes() {
