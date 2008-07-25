@@ -79,6 +79,14 @@ td.info-pane {
 	vertical-align: top;
 	}
 
+table.puzzle-info {
+	empty-cells: show;
+	}
+
+td.info-label {
+	padding-right: 1em;
+	font-weight: bold;
+	}
 td.keys {
 	padding-right: 1em;
 	}

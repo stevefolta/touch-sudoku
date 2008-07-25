@@ -8,6 +8,7 @@ var selectedRow = 0;
 var selectedCol = 0;
 var selectedUsedKey = false;
 var cellsLeft = 0;
+var mistakes = 0;
 
 
 function handle_key(event) {
@@ -117,6 +118,7 @@ function check_puzzle() {
 		for (var i = 0; i < 9; ++i)
 			used[i] = false;
 		}
+	var hadMistake = false;
 
 	// Clear existing errors.
 	for (var row = 0; row < 9; ++row) {
@@ -148,6 +150,7 @@ function check_puzzle() {
 
 			// Mark this box if there was an error.
 			if (boxError) {
+				hadMistake = true;
 				for (var cellRow = 0; cellRow < 3; ++cellRow) {
 					for (var cellCol = 0; cellCol < 3; ++cellCol)
 						markErrorCell(boxRow * 3 + cellRow, boxCol * 3 + cellCol);
@@ -175,6 +178,7 @@ function check_puzzle() {
 
 		// Mark this row if there was an error.
 		if (rowError) {
+			hadMistake = true;
 			for (var col = 0; col < 9; ++col)
 				markErrorCell(row, col);
 			}
@@ -199,6 +203,7 @@ function check_puzzle() {
 
 		// Mark this column if there is an error.
 		if (colError) {
+			hadMistake = true;
 			for (var row = 0; row < 9; ++row)
 				markErrorCell(row, col);
 			}
@@ -213,8 +218,14 @@ function check_puzzle() {
 				cellsLeft += 1;
 			}
 		}
-	if (cellsLeft == 0)
+	if (cellsLeft == 0 && !hadMistake)
 		won();
+
+	// Keep track of the number of mistakes.
+	if (hadMistake) {
+		mistakes += 1;
+		update_mistakes();
+		}
 }
 
 
@@ -238,6 +249,8 @@ function won() {
 			grid[row][col].textContent = winRow.charAt(col);
 			}
 		}
+
+	set_status("Won");
 }
 
 
@@ -263,6 +276,10 @@ function load_puzzle(puzzle) {
 	selectedRow = 0;
 	selectedCol = 0;
 	selected_cell_changed();
+
+	mistakes = 0;
+	update_mistakes();
+	set_status("Playing");
 }
 
 
@@ -278,6 +295,7 @@ function get_puzzle()
 		}
 
 	try {
+		set_status("Loading...");
 		var request = new XMLHttpRequest();
 		request.open("GET", puzzleSrc, true);
 		request.onreadystatechange = function () {
@@ -304,6 +322,15 @@ function clear_puzzle()
 			grid[row][col].removeAttribute("pencil");
 			}
 		}
+}
+
+
+function set_status(status) {
+	document.getElementById("status").textContent = status;
+}
+
+function update_mistakes() {
+	document.getElementById("mistakes").textContent = mistakes;
 }
 
 
