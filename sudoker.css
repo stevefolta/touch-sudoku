@@ -63,4 +63,24 @@ td[pencil][selected] {
 	color: grey;
 	}
 
+h1#title {
+	margin-bottom: 0;
+	}
+h3#subtitle {
+	margin-top: 0;
+	}
+
+h3.info-subtitle {
+	margin-bottom: 0.2em;
+	}
+
+td.info-pane {
+	padding-left: 2em;
+	vertical-align: top;
+	}
+
+td.keys {
+	padding-right: 1em;
+	}
+
 

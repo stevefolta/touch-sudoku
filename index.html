@@ -7,8 +7,12 @@
 </head>
 
 <body onload="sudoker_start()">
-	<h1> Sudoku for Touch-Typists </h1>
+	<h1 id="title"> Touch Sudoku </h1>
+	<h3 id="subtitle"> Sudoku for touch-typists </h3>
 
+	<table class="layout"><tr>
+
+	<td>
 	<table class="grid">
 		<tr>
 			<td><table class="box">
@@ -62,6 +66,22 @@
 			</table></td>
 		</tr>
 	</table>
+	</td>
+
+	<td class="info-pane">
+		<h3 class="info-subtitle"> Keys </h3>
+		<table class="keys">
+			<tr> <td class="keys"> H/J/K/L </td> <td> Movement </td> <tr>
+			<tr> <td class="keys"> 1-9 </td> <td> Enter a digit into the cell </td> <tr>
+			<tr> <td class="keys"> Backspace </td> <td> Clear the cell </td> <tr>
+			<tr> <td class="keys"> Return </td> <td> Check the puzzle </td> <tr>
+			<tr> <td class="keys"> R </td> <td> Reload the puzzle </td> <tr>
+		</table>
+		<p>  Enter multiple digits into a cell to "pencil in" possibilities. </p>
+	</td>
+
+	</tr></table>
+
 </body>
 
 
