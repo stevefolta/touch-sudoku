@@ -301,6 +301,7 @@ function clear_puzzle()
 			grid[row][col].textContent = "";
 			grid[row][col].removeAttribute("given");
 			grid[row][col].removeAttribute("error");
+			grid[row][col].removeAttribute("pencil");
 			}
 		}
 }
