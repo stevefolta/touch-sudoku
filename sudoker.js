@@ -270,16 +270,23 @@ function load_puzzle(puzzle) {
 	col = 0;
 	for (ci = 0; ci < puzzle.length; ++ci) {
 		c = puzzle.charAt(ci);
-		if (c == "\n") {
-			row += 1;
-			col = 0;
-			continue;
-			}
-		if (c != " " && c != ".") {
+		var advance = false;
+		if (c == ".")
+			advance = true;
+		else if (c >= "1" && c <= "9") {
 			grid[row][col].textContent = c;
 			grid[row][col].setAttribute("given", "true");
+			advance = true;
 			}
-		col += 1;
+		if (advance) {
+			col += 1;
+			if (col >= 9) {
+				col = 0;
+				row += 1;
+				if (row >= 9)
+					break;
+				}
+			}
 		}
 
 	// Initial selected cell.
