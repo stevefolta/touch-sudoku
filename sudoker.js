@@ -448,6 +448,13 @@ function sudoker_start() {
 			}
 		}
 
+	var bodies = document.getElementsByTagName("body");
+	if (bodies && bodies.length > 0) {
+		var overrideSrc = bodies.item(0).getAttribute("puzzle-src");
+		if (overrideSrc && overrideSrc.length > 0)
+			puzzleSrc = overrideSrc;
+		}
+
 	document.onkeydown = handle_key;
 	tick();
 
