@@ -1,5 +1,5 @@
 var puzzleSrc = "http://somefancy.com/touch-sudoku/puzzles/current.cgi";
-var requestCrossSite = true;
+var requestCrossSite = false;
 
 
 var grid = null;
@@ -336,6 +336,8 @@ function get_puzzle()
 						set_level("Unknown");
 					load_puzzle(request.responseText);
 					}
+				else
+					set_status("Failed: " + request.status);
 				}
 			}
 		request.send(null);
@@ -460,6 +462,9 @@ function sudoker_start() {
 		var overrideSrc = bodies.item(0).getAttribute("puzzle-src");
 		if (overrideSrc && overrideSrc.length > 0)
 			puzzleSrc = overrideSrc;
+		var overrideRequestCrossSite = bodies.item(0).getAttribute("request-cross-site");
+		if (overrideRequestCrossSite && overrideRequestCrossSite.length > 0)
+			requestCrossSite = overrideRequestCrossSite;
 		}
 
 	document.onkeydown = handle_key;
