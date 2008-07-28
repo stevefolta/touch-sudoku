@@ -10,8 +10,8 @@ var selectedUsedKey = false;
 var cellsLeft = 0;
 var mistakes = 0;
 var checks = 0;
-var startTime = nil;
-var winTime = nil;
+var startTime = null;
+var winTime = null;
 
 
 function handle_key(event) {
@@ -304,12 +304,7 @@ function load_puzzle(puzzle) {
 	mistakes = 0;
 	checks = 0;
 	startTime = new Date();
-	/***
-	What heinous property of Javascript makes this fail so horribly?:
-		winTime = nil;
-	And why, then, does this work fine?:
-	***/
-	winTime = false;
+	winTime = null;
 	update_time();
 	update_mistakes();
 	update_checks();
