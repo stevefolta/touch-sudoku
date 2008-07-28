@@ -24,51 +24,53 @@ function handle_key(event) {
 		return;
 
 	var key = event.keyCode;
+	if (key == 0)
+		key = event.which;
+	key = String.fromCharCode(key);
 	switch (key) {
-		case 74: 	// 'J'
+		case "j":
 			selectedRow = (selectedRow + 1) % 9;
 			selected_cell_changed();
 			handled = true;
 			break;
-		case 75: 	// 'K'
+		case "k":
 			selectedRow -= 1;
 			if (selectedRow < 0)
 				selectedRow = 8;
 			selected_cell_changed();
 			handled = true;
 			break;
-		case 72: 	// 'H'
+		case "h":
 			selectedCol -= 1;
 			if (selectedCol < 0)
 				selectedCol = 8;
 			selected_cell_changed();
 			handled = true;
 			break;
-		case 76: 	// 'L'
+		case "l":
 			selectedCol = (selectedCol + 1) % 9;
 			selected_cell_changed();
 			handled = true;
 			break;
-		case 48:  case 49:  case 50:  case 51:  case 52:
-		case 53:  case 54:  case 55:  case 56:  case 57:
+		case "1":	case "2":	case "3":	case "4": case "5":
+		case "6":	case "7":	case "8":	case "9":
 			if (!winTime)
-				digit_pressed(key - 48);
+				digit_pressed(key);
 			handled = true;
 			break;
-		case 8: 	// Backspace
+		case "\b": 	// Backspace
 			if (!winTime && !selectedCell.getAttribute("given"))
 				selectedCell.textContent = "";
 			handled = true;
 			break;
-		case 13:  	// Enter
-		case 191: 	// '?' (Really!)
+		case "\r":  	// Enter
 			if (!winTime)
 				check_puzzle();
 			update_time();
 			selectedUsedKey = false;
 			handled = true;
 			break;
-		case 82: 	// 'R'
+		case "r":
 			clear_puzzle();
 			get_puzzle();
 			handled = true;
@@ -86,16 +88,12 @@ function digit_pressed(digit) {
 	if (selectedCell.getAttribute("given"))
 		return;
 
-	var str = (digit + 48).toString(16);
-	if (str.length == 1)
-		str = "0" + str;
-	str = unescape("%" + str);
 	if (!selectedUsedKey) {
-		selectedCell.textContent = str;
+		selectedCell.textContent = digit;
 		selectedUsedKey = true;
 		}
 	else
-		selectedCell.textContent += str;
+		selectedCell.textContent += digit;
 
 	check_pencil();
 }
@@ -467,7 +465,11 @@ function sudoker_start() {
 			requestCrossSite = overrideRequestCrossSite;
 		}
 
-	document.onkeydown = handle_key;
+	// Magic to make Netscape 4 work (as if we really care).
+	if (document.layers)
+		document.captureEvents(Event.KEYPRESS);
+
+	document.onkeypress = handle_key;
 	tick();
 
 	get_puzzle();
