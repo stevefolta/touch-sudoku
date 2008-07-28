@@ -54,6 +54,7 @@ function handle_key(event) {
 			break;
 		case "1":	case "2":	case "3":	case "4": case "5":
 		case "6":	case "7":	case "8":	case "9":
+		case "?":	case "=":
 			if (!winTime)
 				digit_pressed(key);
 			handled = true;
@@ -100,7 +101,15 @@ function digit_pressed(digit) {
 
 
 function check_pencil() {
-	if (selectedCell.textContent.length > 1)
+	var pencilled = false;
+	var contents = selectedCell.textContent;
+	if (contents.length > 1)
+		pencilled = true;
+	else if (contents.length == 1) {
+		if (contents < "1" || contents > "9")
+			pencilled = true;
+		}
+	if (pencilled)
 		selectedCell.setAttribute("pencil", "true");
 	else
 		selectedCell.removeAttribute("pencil");
@@ -236,7 +245,7 @@ function check_puzzle() {
 
 function digitAt(row, col) {
 	var entry = grid[row][col].textContent;
-	if (entry.length != 1)
+	if (entry.length != 1 || entry < "1" || entry > "9")
 		return -1;
 	return parseInt(entry) - 1;
 }
