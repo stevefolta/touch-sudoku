@@ -425,6 +425,13 @@ function tick() {
 }
 
 
+function cell_click() {
+	selectedRow = parseInt(this.getAttribute("row"));
+	selectedCol = parseInt(this.getAttribute("col"));
+	selected_cell_changed();
+}
+
+
 function sudoker_start() {
 	// Create the grid.
 	grid = new Array(9);
@@ -440,9 +447,15 @@ function sudoker_start() {
 		td = tds[i];
 		tdClass = td.getAttribute("class");
 		if (tdClass == "cell") {
+			// Set up the cell.
 			var row = boxRow * 3 + cellRow;
 			var col = boxCol * 3 + cellCol;
 			grid[row][col] = td;
+			td.setAttribute("row", row);
+			td.setAttribute("col", col);
+			td.onclick = cell_click;
+
+			// Advance to the next cell.
 			cellCol += 1;
 			if (cellCol >= 3) {
 				cellCol = 0;
