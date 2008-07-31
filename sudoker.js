@@ -272,27 +272,116 @@ function won() {
 
 
 function load_puzzle(puzzle) {
-	// Fill in the grid with the puzzle.
-	row = 0;
-	col = 0;
-	for (ci = 0; ci < puzzle.length; ++ci) {
-		c = puzzle.charAt(ci);
-		var advance = false;
-		if (c == ".")
-			advance = true;
-		else if (c >= "1" && c <= "9") {
-			grid[row][col].textContent = c;
-			grid[row][col].setAttribute("given", "true");
-			advance = true;
-			}
-		if (advance) {
-			col += 1;
-			if (col >= 9) {
-				col = 0;
-				row += 1;
-				if (row >= 9)
-					break;
+	var row = 0;
+	var col = 0;
+	var ci = 0;
+	var puzzleComplete = false;
+	var inAnswers = false;
+
+	function parse_puzzle_line() {
+		for (; ci < puzzle.length; ++ci) {
+			var c = puzzle.charAt(ci);
+			if (c == "\n" || c == "\r") {
+				ci += 1;
+				break;
 				}
+			if (puzzleComplete)
+				continue;
+
+			var advance = false;
+			if (c == ".")
+				advance = true;
+			else if (c >= "1" && c <= "9") {
+				if (inAnswers)
+					grid[row][col].setAttribute("answer", c);
+				else {
+					grid[row][col].textContent = c;
+					grid[row][col].setAttribute("given", "true");
+					}
+				advance = true;
+				}
+			if (advance) {
+				col += 1;
+				if (col >= 9) {
+					col = 0;
+					row += 1;
+					if (row >= 9)
+						puzzleComplete = true;
+					}
+				}
+			}
+		}
+
+	function read_rest_of_line() {
+		var lineStart = -1;
+		while (ci < puzzle.length) {
+			var c = puzzle.charAt(ci);
+			ci += 1;
+			if (c == "\n" || c == "\r")
+				break;
+			if (lineStart < 0 && c != " " && c != "\t")
+				lineStart = ci - 1;
+			}
+		if (lineStart < 0)
+			return "";
+		else
+			return puzzle.slice(lineStart, ci - 1);
+		}
+
+	function parse_header_line() {
+		// Get the header name.
+		var headerStart = ci;
+		var headerName = "";
+		while (ci < puzzle.length) {
+			var c = puzzle.charAt(ci);
+			ci += 1;
+			if (c == "\n" || c == "\r") {
+				// Reached the end of line before the ":"; not really a header.
+				return;
+				}
+
+			if (c == ":") {
+				headerName = puzzle.slice(headerStart, ci - 1);
+				break;
+				}
+			}
+
+		if (headerName == "Answers") {
+			row = 0;
+			col = 0;
+			puzzleComplete = 0;
+			inAnswers = true;
+			// The rest of the line might contain the answers.
+			parse_puzzle_line();
+			}
+		else if (headerName == "Puzzle-Level") {
+			set_level(read_rest_of_line());
+			}
+		else {
+			// Discard the rest of the line.
+			read_rest_of_line();
+			}
+		}
+
+	// Read the puzzle file, line-by-line.
+	while (ci < puzzle.length) {
+		// What kind of line is it?  Peek at the first character to find out.
+		var c = puzzle.charAt(ci);
+		if (c == "\n" || c == "\r") {
+			// Blank line.
+			ci += 1;
+			}
+		else if (c == "." || (c >= "1" && c <= "9")) {
+			// Part of the puzzle.
+			parse_puzzle_line();
+			}
+		else if (c == "#") {
+			// Comment line.
+			read_rest_of_line();
+			}
+		else {
+			// Treat anything else as a (potential) header line.
+			parse_header_line();
 			}
 		}
 
@@ -301,6 +390,7 @@ function load_puzzle(puzzle) {
 	selectedCol = 0;
 	selected_cell_changed();
 
+	// Clear stats.
 	mistakes = 0;
 	checks = 0;
 	startTime = new Date();
@@ -357,6 +447,7 @@ function clear_puzzle()
 			grid[row][col].removeAttribute("given");
 			grid[row][col].removeAttribute("error");
 			grid[row][col].removeAttribute("pencil");
+			grid[row][col].removeAttribute("answer");
 			}
 		}
 }
