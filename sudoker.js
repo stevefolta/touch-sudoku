@@ -96,6 +96,7 @@ function digit_pressed(digit) {
 	else
 		selectedCell.textContent += digit;
 
+	selectedCell.removeAttribute("wrong");
 	check_pencil();
 }
 
@@ -285,6 +286,7 @@ function load_puzzle(puzzle) {
 	var ci = 0;
 	var puzzleComplete = false;
 	var inAnswers = false;
+	var inHeaderSection = true;
 
 	function parse_puzzle_line() {
 		for (; ci < puzzle.length; ++ci) {
@@ -378,6 +380,16 @@ function load_puzzle(puzzle) {
 		if (c == "\n" || c == "\r") {
 			// Blank line.
 			ci += 1;
+			if (inHeaderSection) {
+				// Header section ending; reset the puzzle.
+				// This allows the answers to be in the header while the puzzle itself
+				// is in the body.
+				inHeaderSection = false;
+				row = 0;
+				col = 0;
+				puzzleComplete = 0;
+				inAnswers = false;
+				}
 			}
 		else if (c == "." || (c >= "1" && c <= "9")) {
 			// Part of the puzzle.
