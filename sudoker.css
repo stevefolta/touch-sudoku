@@ -46,6 +46,12 @@ td.cell {
 td[error] {
 	background-color: red;
 	}
+td[wrong] {
+	color: red;
+	}
+td[error][wrong] {
+	color: #FF8888;
+	}
 
 td[selected] {
 	background-color: lightblue;

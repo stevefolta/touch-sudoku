@@ -135,8 +135,10 @@ function check_puzzle() {
 
 	// Clear existing errors.
 	for (var row = 0; row < 9; ++row) {
-		for (var col = 0; col < 9; ++col)
+		for (var col = 0; col < 9; ++col) {
 			grid[row][col].removeAttribute("error");
+			grid[row][col].removeAttribute("wrong");
+			}
 		}
 
 	// Check the boxes.
@@ -222,13 +224,19 @@ function check_puzzle() {
 			}
 		}
 
-	// How many cells left?
+	// Cell-by-cell checks (answers, cells left).
 	cellsLeft = 0;
 	for (var row = 0; row < 9; ++row) {
 		for (var col = 0; col < 9; ++col) {
 			var digit = digitAt(row, col);
 			if (digit < 0)
 				cellsLeft += 1;
+			else {
+				var cell = grid[row][col];
+				var answer = cell.getAttribute("answer");
+				if (answer && answer.length == 1 && cell.textContent != answer)
+					cell.setAttribute("wrong", "true");
+				}
 			}
 		}
 	if (cellsLeft == 0 && !hadMistake)
