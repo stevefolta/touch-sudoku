@@ -99,5 +99,15 @@ td.keys {
 td[unknown] {
 	font-style: italic;
 	}
+span.info-label-extra {
+	font-weight: normal;
+	}
+
+tr[hidden] {
+	display: none;
+	}
+td#avg-time {
+	vertical-align: text-top;
+	}
 
 

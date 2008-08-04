@@ -302,9 +302,8 @@ function won() {
 			request.open("POST", statsUrl, true);
 			request.onreadystatechange = function () {
 				if (request.readyState == 4) {
-					if (request.status == 200 && request.responseText) {
-						/***/
-						}
+					if (request.status == 200 && request.responseText)
+						got_stats(request.responseText);
 					}
 				}
 			request.send(JSON.stringify(statsObj));
@@ -455,6 +454,7 @@ function load_puzzle(puzzle) {
 	update_time();
 	update_mistakes();
 	update_checks();
+	document.getElementById("avg-time-row").setAttribute("hidden", "true");
 	set_status("Playing");
 }
 
@@ -536,6 +536,26 @@ function checked() {
 	update_checks();
 }
 
+function elapsedTimeToString(seconds) {
+	var str = "";
+	var hours = Math.floor(seconds / (60 * 60));
+	if (hours > 0) {
+		str += hours;
+		str += ":";
+		}
+	seconds -= hours * 60 * 60;
+	var minutes = Math.floor(seconds / 60);
+	if (hours > 0 && minutes < 10)
+		str += "0";
+	str += minutes;
+	str += ":";
+	seconds -= minutes * 60;
+	if (seconds < 10)
+		str += "0";
+	str += seconds;
+	return str;
+}
+
 function update_time() {
 	if (!startTime)
 		document.getElementById("time").textContent = "";
@@ -544,23 +564,8 @@ function update_time() {
 		if (!endTime)
 			endTime = new Date();
 		var elapsedTime = Math.floor((endTime - startTime) / 1000);
-		var str = "";
-		var hours = Math.floor(elapsedTime / (60 * 60));
-		if (hours > 0) {
-			str += hours;
-			str += ":";
-			}
-		elapsedTime -= hours * 60 * 60;
-		var minutes = Math.floor(elapsedTime / 60);
-		if (hours > 0 && minutes < 10)
-			str += "0";
-		str += minutes;
-		str += ":";
-		elapsedTime -= minutes * 60;
-		if (elapsedTime < 10)
-			str += "0";
-		str += elapsedTime;
-		document.getElementById("time").textContent = str;
+		document.getElementById("time").textContent =
+			elapsedTimeToString(elapsedTime);
 		}
 }
 
@@ -577,6 +582,22 @@ function cell_click() {
 	selectedRow = parseInt(this.getAttribute("row"));
 	selectedCol = parseInt(this.getAttribute("col"));
 	selected_cell_changed();
+}
+
+
+function got_stats(json) {
+	try {
+		var result = JSON.parse(json);
+		if (result.averageTime) {
+			document.getElementById("avg-time").textContent =
+				elapsedTimeToString(result.averageTime);
+			}
+
+		document.getElementById("avg-time-row").removeAttribute("hidden");
+		}
+	catch (error) {
+		// Ignore the error.
+		}
 }
 
 
