@@ -3,9 +3,17 @@
 <head>
 	<title> Touch Sudoku </title>
 	<link rel="stylesheet" href="sudoker.css" />
+	<script type="text/javascript" src="json2.js"></script>
 	<script type="text/javascript" src="sudoker.js"></script>
 </head>
 
+<!--
+	You can set some things by including them as attributes of the <body> tag:
+
+	puzzle-src        	The URL to fetch puzzles from.
+	stats-url         	The URL to post stats to.
+	request-cross-site	If true, requests Firefox to allow cross-site XMLHttpRequests (for testing).
+-->
 <body onload="sudoker_start()">
 	<h1 id="title"> Touch Sudoku </h1>
 	<h3 id="subtitle"> Sudoku for touch-typists </h3>

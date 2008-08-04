@@ -1,5 +1,6 @@
 var puzzleSrc = "http://somefancy.com/touch-sudoku/puzzles/current.cgi";
 var requestCrossSite = false;
+var statsUrl = null;
 
 
 var grid = null;
@@ -277,6 +278,42 @@ function won() {
 
 	set_status("Won");
 	update_time();
+
+	// Send stats to the server, if configured to do so.
+	if (statsUrl) {
+		try {
+			if (requestCrossSite) {
+				try {
+					netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+					}
+				catch (e) {
+					alert("Permission UniversalBrowserRead denied.");
+					}
+				}
+
+			var levelElement = document.getElementById("level");
+			var seconds = Math.floor((winTime - startTime) / 1000);
+			var statsObj = {
+				"level": levelElement.textContent,
+				"seconds": seconds
+				};
+
+			var request = new XMLHttpRequest();
+			request.open("POST", statsUrl, true);
+			request.onreadystatechange = function () {
+				if (request.readyState == 4) {
+					if (request.status == 200 && request.responseText) {
+						/***/
+						}
+					}
+				}
+			request.send(JSON.stringify(statsObj));
+			}
+		catch (error) {
+			// Do nothing.
+			alert("Couldn't send to stats: " + error);
+			}
+		}
 }
 
 
@@ -591,6 +628,7 @@ function sudoker_start() {
 		var overrideRequestCrossSite = bodies.item(0).getAttribute("request-cross-site");
 		if (overrideRequestCrossSite && overrideRequestCrossSite.length > 0)
 			requestCrossSite = overrideRequestCrossSite;
+		statsUrl = bodies.item(0).getAttribute("stats-url");
 		}
 
 	// Magic to make Netscape 4 work (as if we really care).
