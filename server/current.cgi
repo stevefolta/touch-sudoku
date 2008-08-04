@@ -15,8 +15,6 @@
 # 	.....86.9
 # 	7...6.4.1
 # 	4..7..8..
-#
-# The "Puzzle-Level:" header ends up as part of the HTTP headers.
 
 num_files=0
 for file in *; do
@@ -29,9 +27,9 @@ done
 
 randIndex=$((RANDOM % num_files))
 
-# Add the Content-type header.  The file will contain additional headers
-# pertaining to the puzzle.
+# Add the Content-type header.
 echo Content-type: text/plain
+echo
 
 cat ${files[$randIndex]}
 
