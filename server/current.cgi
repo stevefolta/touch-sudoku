@@ -15,6 +15,9 @@
 # 	.....86.9
 # 	7...6.4.1
 # 	4..7..8..
+#
+# It will pick a puzzle at random.
+
 
 num_files=0
 for file in *; do

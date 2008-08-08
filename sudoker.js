@@ -588,12 +588,11 @@ function cell_click() {
 function got_stats(json) {
 	try {
 		var result = JSON.parse(json);
-		if (result.averageTime) {
+		if (result.levelAverageTime) {
 			document.getElementById("avg-time").textContent =
-				elapsedTimeToString(result.averageTime);
+				elapsedTimeToString(result.levelAverageTime);
+			document.getElementById("avg-time-row").removeAttribute("hidden");
 			}
-
-		document.getElementById("avg-time-row").removeAttribute("hidden");
 		}
 	catch (error) {
 		// Ignore the error.
