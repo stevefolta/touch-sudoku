@@ -310,7 +310,6 @@ function won() {
 			}
 		catch (error) {
 			// Do nothing.
-			alert("Couldn't send to stats: " + error);
 			}
 		}
 }
