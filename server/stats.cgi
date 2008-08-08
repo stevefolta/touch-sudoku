@@ -8,10 +8,18 @@
 
 # Configuration.
 levelDir = "levels"
+logFilePath = "stats-errors.log"
 
 import simplejson, sys, os.path, fcntl
 
 defaultStats = { "plays": 0, "totalSeconds": 0, "totalMistakes": 0 }
+
+
+def log(message):
+	errorLog = open(logFilePath, "a")
+	print >> errorLog, message
+	errorLog.close
+
 
 def update_stats_file(path, seconds, mistakes):
 	stats = defaultStats.copy()
@@ -75,8 +83,7 @@ try:
 except:
 	# Do nothing.  We should somehow signal an error thru HTTP... but the client
 	# wouldn't do anything with it anyway.
-	print "Exception..."
-	print sys.exc_type
-	print sys.exc_value
-	pass
+	errorLog = open(logFilePath, "a")
+	print >> errorLog, sys.exc_type, sys.exc_value
+	errorLog.close
 
