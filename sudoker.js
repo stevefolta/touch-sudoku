@@ -236,8 +236,10 @@ function check_puzzle() {
 			else {
 				var cell = grid[row][col];
 				var answer = cell.getAttribute("answer");
-				if (answer && answer.length == 1 && cell.textContent != answer)
+				if (answer && answer.length == 1 && cell.textContent != answer) {
 					cell.setAttribute("wrong", "true");
+					hadMistake = true;
+					}
 				}
 			}
 		}
