@@ -13,6 +13,9 @@ var mistakes = 0;
 var checks = 0;
 var startTime = null;
 var winTime = null;
+var preSpeculationGrid = "";
+var speculationStartRow = 0;
+var speculationStartCol = 0;
 
 
 function handle_key(event) {
@@ -75,6 +78,23 @@ function handle_key(event) {
 		case "r":
 			clear_puzzle();
 			get_puzzle();
+			handled = true;
+			break;
+		case "s":
+			if (preSpeculationGrid) {
+				// Speculating; go back to pre-speculation.
+				clear_puzzle();
+				install_puzzle(preSpeculationGrid);
+				end_speculation();
+				}
+			else {
+				// Starting speculation.
+				preSpeculationGrid = puzzle_string();
+				speculationStartRow = selectedRow;
+				speculationStartCol = selectedCol;
+				grid[speculationStartRow][speculationStartCol].setAttribute("speculationStart", "true");
+				document.getElementById("speculation").removeAttribute("hidden");
+				}
 			handled = true;
 			break;
 		}
@@ -277,6 +297,7 @@ function won() {
 			grid[row][col].textContent = winRow.charAt(col);
 			}
 		}
+	end_speculation();
 
 	set_status("Won");
 	update_time();
@@ -317,7 +338,15 @@ function won() {
 }
 
 
-function load_puzzle(puzzle) {
+function end_speculation()
+{
+	grid[speculationStartRow][speculationStartCol].removeAttribute("speculationStart");
+	document.getElementById("speculation").setAttribute("hidden", "true");
+	preSpeculationGrid = "";
+}
+
+
+function install_puzzle(puzzle) {
 	var row = 0;
 	var col = 0;
 	var ci = 0;
@@ -345,6 +374,23 @@ function load_puzzle(puzzle) {
 					grid[row][col].textContent = c;
 					grid[row][col].setAttribute("given", "true");
 					}
+				advance = true;
+				}
+			else if (c == "(") {
+				var numChars = 0;
+				grid[row][col].textContent = "";
+				while (true) {
+					c = puzzle.charAt(++ci);
+					if (c == ")" || c == "")
+						break;
+					grid[row][col].textContent += c;
+					numChars += 1;
+					}
+				grid[row][col].removeAttribute("given");
+				if (numChars > 1)
+					grid[row][col].setAttribute("pencil", "true");
+				else
+					grid[row][col].removeAttribute("pencil");
 				advance = true;
 				}
 			if (advance) {
@@ -428,7 +474,7 @@ function load_puzzle(puzzle) {
 				inAnswers = false;
 				}
 			}
-		else if (c == "." || (c >= "1" && c <= "9")) {
+		else if (c == "." || (c >= "1" && c <= "9") || c == "(") {
 			// Part of the puzzle.
 			parse_puzzle_line();
 			}
@@ -441,6 +487,12 @@ function load_puzzle(puzzle) {
 			parse_header_line();
 			}
 		}
+}
+
+
+function load_puzzle(puzzle)
+{
+	install_puzzle(puzzle);
 
 	// Initial selected cell.
 	selectedRow = 0;
@@ -508,6 +560,27 @@ function clear_puzzle()
 			grid[row][col].removeAttribute("answer");
 			}
 		}
+}
+
+function puzzle_string()
+{
+	var result = "";
+	for (var row = 0; row < 9; ++row) {
+		for (var col = 0; col < 9; ++col) {
+			var cell = grid[row][col];
+			var cellContent = cell.textContent;
+			if (cellContent == "") {
+				result += ".";
+				continue;
+				}
+			if (!cell.getAttribute("given"))
+				result += "(";
+			result += cellContent;
+			if (!cell.getAttribute("given"))
+				result += ")";
+			}
+		}
+	return result;
 }
 
 
