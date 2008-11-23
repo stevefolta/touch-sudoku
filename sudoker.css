@@ -53,6 +53,9 @@ td[error][wrong] {
 	color: #FF8888;
 	}
 
+td[speculationStart] {
+	background-color: lightgreen;
+	}
 td[selected] {
 	background-color: lightblue;
 	}
@@ -108,6 +111,10 @@ tr[hidden] {
 	}
 td#avg-time {
 	vertical-align: text-top;
+	}
+
+tr#speculation {
+	color: red;
 	}
 
 

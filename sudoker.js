@@ -14,6 +14,8 @@ var checks = 0;
 var startTime = null;
 var winTime = null;
 var preSpeculationGrid = "";
+var speculationStartRow = 0;
+var speculationStartCol = 0;
 
 
 function handle_key(event) {
@@ -81,15 +83,17 @@ function handle_key(event) {
 		case "s":
 			if (preSpeculationGrid) {
 				// Speculating; go back to pre-speculation.
-alert("Ending speculation.");
 				clear_puzzle();
 				install_puzzle(preSpeculationGrid);
-				preSpeculationGrid = "";
+				end_speculation();
 				}
 			else {
 				// Starting speculation.
-alert("Starting speculation.");
 				preSpeculationGrid = puzzle_string();
+				speculationStartRow = selectedRow;
+				speculationStartCol = selectedCol;
+				grid[speculationStartRow][speculationStartCol].setAttribute("speculationStart", "true");
+				document.getElementById("speculation").removeAttribute("hidden");
 				}
 			handled = true;
 			break;
@@ -293,6 +297,7 @@ function won() {
 			grid[row][col].textContent = winRow.charAt(col);
 			}
 		}
+	end_speculation();
 
 	set_status("Won");
 	update_time();
@@ -330,6 +335,14 @@ function won() {
 			// Do nothing.
 			}
 		}
+}
+
+
+function end_speculation()
+{
+	grid[speculationStartRow][speculationStartCol].removeAttribute("speculationStart");
+	document.getElementById("speculation").setAttribute("hidden", "true");
+	preSpeculationGrid = "";
 }
 
 
