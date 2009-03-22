@@ -5,6 +5,7 @@
 	<link rel="stylesheet" href="sudoker.css" />
 	<script type="text/javascript" src="json2.js"></script>
 	<script type="text/javascript" src="sudoker.js"></script>
+	<script type="text/javascript" src="local.js"></script>
 </head>
 
 <!--
@@ -13,6 +14,8 @@
 	puzzle-src        	The URL to fetch puzzles from.
 	stats-url         	The URL to post stats to.
 	request-cross-site	If true, requests Firefox to allow cross-site XMLHttpRequests (for testing).
+
+	You can also set these in local.js, as "puzzleSrc", "statsUrl", and "requestCrossSite".
 -->
 <body onload="sudoker_start()">
 	<h1 id="title"> Touch Sudoku </h1>
