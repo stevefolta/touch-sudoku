@@ -29,8 +29,8 @@ td {
 	}
 
 td.cell {
-	width: 50pt;
-	height: 50pt;
+	width: 2.30em;
+	height: 2.30em;
 	border-width: 1px;
 	border-color: black;
 	border-style: solid;
