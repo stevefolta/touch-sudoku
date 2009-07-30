@@ -81,20 +81,10 @@ function handle_key(event) {
 			handled = true;
 			break;
 		case "s":
-			if (preSpeculationGrid) {
-				// Speculating; go back to pre-speculation.
-				clear_puzzle();
-				install_puzzle(preSpeculationGrid);
-				end_speculation();
-				}
-			else {
-				// Starting speculation.
-				preSpeculationGrid = puzzle_string();
-				speculationStartRow = selectedRow;
-				speculationStartCol = selectedCol;
-				grid[speculationStartRow][speculationStartCol].setAttribute("speculationStart", "true");
-				document.getElementById("speculation").removeAttribute("hidden");
-				}
+			if (is_speculating())
+				abort_speculation();
+			else
+				start_speculation();
 			handled = true;
 			break;
 		}
@@ -297,7 +287,7 @@ function won() {
 			grid[row][col].textContent = winRow.charAt(col);
 			}
 		}
-	end_speculation();
+	terminate_speculation();
 
 	set_status("Won");
 	update_time();
@@ -338,11 +328,38 @@ function won() {
 }
 
 
-function end_speculation()
+function is_speculating()
+{
+	return (preSpeculationGrid ? true : false);
+}
+
+
+function start_speculation()
+{
+	preSpeculationGrid = puzzle_string();
+	speculationStartRow = selectedRow;
+	speculationStartCol = selectedCol;
+	grid[speculationStartRow][speculationStartCol].setAttribute("speculationStart", "true");
+	document.getElementById("speculation").removeAttribute("hidden");
+}
+
+
+function terminate_speculation()
 {
 	grid[speculationStartRow][speculationStartCol].removeAttribute("speculationStart");
 	document.getElementById("speculation").setAttribute("hidden", "true");
 	preSpeculationGrid = "";
+}
+
+
+function abort_speculation()
+{
+alert("abort_speculation: clearing puzzle.");
+	clear_puzzle_answers_too(false);
+alert("abort_speculation: installing puzzle.");
+	install_puzzle(preSpeculationGrid);
+alert("abort_speculation: terminating.");
+	terminate_speculation();
 }
 
 
@@ -549,7 +566,7 @@ function get_puzzle()
 		}
 }
 
-function clear_puzzle()
+function clear_puzzle_answers_too(answers_too)
 {
 	for (var row = 0; row < 9; ++row) {
 		for (var col = 0; col < 9; ++col) {
@@ -557,10 +574,17 @@ function clear_puzzle()
 			grid[row][col].removeAttribute("given");
 			grid[row][col].removeAttribute("error");
 			grid[row][col].removeAttribute("pencil");
-			grid[row][col].removeAttribute("answer");
+			if (answers_too)
+				grid[row][col].removeAttribute("answer");
 			}
 		}
 }
+
+function clear_puzzle()
+{
+	clear_puzzle_answers_too(true);
+}
+
 
 function puzzle_string()
 {
