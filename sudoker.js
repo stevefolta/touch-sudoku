@@ -354,11 +354,8 @@ function terminate_speculation()
 
 function abort_speculation()
 {
-alert("abort_speculation: clearing puzzle.");
 	clear_puzzle_answers_too(false);
-alert("abort_speculation: installing puzzle.");
 	install_puzzle(preSpeculationGrid);
-alert("abort_speculation: terminating.");
 	terminate_speculation();
 }
 
