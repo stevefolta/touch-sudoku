@@ -16,6 +16,7 @@ var winTime = null;
 var preSpeculationGrid = "";
 var speculationStartRow = 0;
 var speculationStartCol = 0;
+var digits = null;
 
 
 function handle_key(event) {
@@ -109,6 +110,7 @@ function digit_pressed(digit) {
 
 	selectedCell.removeAttribute("wrong");
 	check_pencil();
+	update_digits();
 }
 
 
@@ -128,12 +130,30 @@ function check_pencil() {
 }
 
 
+function update_digits() {
+	if (digits == null)
+		return;
+
+	var i = 0;
+	for (i = 0; i < 9; ++i)
+		digits[i].removeAttribute("active");
+
+	var contents = selectedCell.textContent;
+	for (i = 0; i < contents.length; ++i) {
+		var digit = parseInt(contents.charAt(i));
+		if (digit >= 1 && digit <= 9)
+			digits[digit - 1].setAttribute("active", "true");
+		}
+	}
+
+
 function selected_cell_changed() {
 	if (selectedCell)
 		selectedCell.removeAttribute("selected");
 	selectedCell = grid[selectedRow][selectedCol];
 	selectedCell.setAttribute("selected", "true");
 	selectedUsedKey = false;
+	update_digits();
 }
 
 
@@ -680,6 +700,44 @@ function cell_click() {
 }
 
 
+function digit_click() {
+	if (winTime)
+		return;
+	if (selectedCell.getAttribute("given"))
+		return;
+
+	digit = this.getAttribute("whichDigit");
+	if (this.getAttribute("active")) {
+		// Remove the digit.
+		var str = selectedCell.textContent;
+		var index = str.indexOf(digit);
+		if (index >= 0)
+			selectedCell.textContent = str.slice(0, index) + str.slice(index + 1);
+		this.removeAttribute("active");
+		}
+	else {
+		// Add the digit, sorted.
+		var str = selectedCell.textContent;
+		var i = 0;
+		var addedDigit = false;
+		for (i = 0; i < str.length; ++i) {
+			if (str.charAt(i) > digit) {
+				str = str.slice(0, i) + digit + str.slice(i);
+				addedDigit = true;
+				break;
+				}
+			}
+		if (!addedDigit)
+			str += digit;
+		selectedCell.textContent = str;
+		this.setAttribute("active", "true");
+		}
+
+	selectedCell.removeAttribute("wrong");
+	check_pencil();
+	}
+
+
 function got_stats(json) {
 	try {
 		var result = JSON.parse(json);
@@ -706,6 +764,7 @@ function sudoker_start() {
 	var boxCol = 0;
 	var cellRow = 0;
 	var cellCol = 0;
+	var nextDigit = 1;
 	for (var i = 0; i < tds.length; ++i) {
 		td = tds[i];
 		tdClass = td.getAttribute("class");
@@ -732,6 +791,17 @@ function sudoker_start() {
 						}
 					}
 				}
+			}
+		else if (tdClass == "digit") {
+			// Set up the digit.
+			td.setAttribute("whichDigit", nextDigit);
+			td.onclick = digit_click;
+
+			if (digits == null)
+				digits = [];
+			digits[nextDigit - 1] = td;
+
+			nextDigit += 1;
 			}
 		}
 

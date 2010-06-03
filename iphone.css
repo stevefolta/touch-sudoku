@@ -1,0 +1,144 @@
+html {
+	font-family: sans-serif;
+	}
+
+table.grid {
+	border-width: 3px;
+	border-color: black;
+	border-style: solid;
+	border-collapse: collapse;
+	}
+
+table.box {
+	border-width: 2px;
+	border-color: black;
+	border-style: solid;
+	margin: 0;
+	padding: 0;
+	border-collapse: collapse;
+	}
+
+tr {
+	margin: 0;
+	padding: 0;
+	}
+
+td {
+	margin: 0;
+	padding: 0;
+	}
+
+td.cell {
+	width: 2.30em;
+	height: 2.30em;
+	border-width: 1px;
+	border-color: black;
+	border-style: solid;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	empty-cells: show;
+	color: #0000D0;
+	font-family: "Arial Rounded MT Bold";
+	font-weight: bold;
+	font-size: 275%;
+	}
+
+td[error] {
+	background-color: red;
+	}
+td[wrong] {
+	color: red;
+	}
+td[error][wrong] {
+	color: #FF8888;
+	}
+
+td[speculationStart] {
+	background-color: lightgreen;
+	}
+td[selected] {
+	background-color: lightblue;
+	}
+
+td[given] {
+	color: black;
+	}
+
+td[pencil] {
+	font-family: sans-serif;
+	color: lightgrey;
+	}
+td[pencil][selected] {
+	color: grey;
+	}
+
+h1#title {
+	margin-bottom: 0;
+	}
+h3#subtitle {
+	margin-top: 0;
+	}
+
+h3.info-subtitle {
+	margin-bottom: 0.2em;
+	}
+
+td.info-pane {
+	padding-left: 2em;
+	vertical-align: top;
+	}
+
+table.puzzle-info {
+	empty-cells: show;
+	}
+
+td.info-label {
+	padding-right: 1em;
+	font-weight: bold;
+	}
+td.keys {
+	padding-right: 1em;
+	}
+td[unknown] {
+	font-style: italic;
+	}
+span.info-label-extra {
+	font-weight: normal;
+	}
+
+tr[hidden] {
+	display: none;
+	}
+td#avg-time {
+	vertical-align: text-top;
+	}
+
+tr#speculation {
+	color: red;
+	}
+
+
+/* iPhone version */
+
+table.digits {
+	margin-top: 0.6em;
+	}
+
+td.digit {
+	width: 2.30em;
+	height: 2.30em;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	color: #CCCCCC;
+	font-family: "Arial Rounded MT Bold";
+	font-weight: bold;
+	font-size: 275%;
+	}
+
+td.digit[active] {
+	color: black;
+	}
+
+

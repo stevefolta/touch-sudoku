@@ -1,0 +1,112 @@
+<html>
+
+<head>
+	<title> Touch Sudoku </title>
+	<link rel="stylesheet" href="iphone.css" />
+	<script type="text/javascript" src="json2.js"></script>
+	<script type="text/javascript" src="sudoker.js"></script>
+	<script type="text/javascript" src="local.js"></script>
+</head>
+
+<!--
+	You can set some things by including them as attributes of the <body> tag:
+
+	puzzle-src        	The URL to fetch puzzles from.
+	stats-url         	The URL to post stats to.
+	request-cross-site	If true, requests Firefox to allow cross-site XMLHttpRequests (for testing).
+
+	You can also set these in local.js, as "puzzleSrc", "statsUrl", and "requestCrossSite".
+-->
+<body onload="sudoker_start()">
+	<h1 id="title"> Sudoku for iPhone </h1>
+
+	<table class="grid">
+		<tr>
+			<td><table class="box">
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+			</table></td>
+			<td><table class="box">
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+			</table></td>
+			<td><table class="box">
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+			</table></td>
+		</tr>
+		<tr>
+			<td><table class="box">
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+			</table></td>
+			<td><table class="box">
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+			</table></td>
+			<td><table class="box">
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+			</table></td>
+		</tr>
+		<tr>
+			<td><table class="box">
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+			</table></td>
+			<td><table class="box">
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+			</table></td>
+			<td><table class="box">
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+				<tr><td class="cell"></td><td class="cell"></td><td class="cell"></td></tr>
+			</table></td>
+		</tr>
+	</table>
+
+	<table class="digits"><tr>
+		<td class="digit"> 1 </td>
+		<td class="digit"> 2 </td>
+		<td class="digit"> 3 </td>
+		<td class="digit"> 4 </td>
+		<td class="digit"> 5 </td>
+		<td class="digit"> 6 </td>
+		<td class="digit"> 7 </td>
+		<td class="digit"> 8 </td>
+		<td class="digit"> 9 </td>
+	</tr></table>
+
+	<h3 class="info-subtitle"> Puzzle </h3>
+	<table class="puzzle-info">
+		<tr> <td class="info-label"> Status: </td> <td id="status"> </td> </tr>
+		<tr> <td class="info-label"> Level: </td> <td id="level"> </td> </tr>
+		<tr> <td class="info-label"> Mistakes: </td> <td id="mistakes"> 0 </td> </tr>
+		<tr> <td class="info-label"> Checks: </td> <td id="checks"> 0 </td> </tr>
+		<tr> <td class="info-label"> Time: </td> <td id="time"> </td> </tr>
+		<tr id="speculation" hidden="true">
+			<td colspan="2"> Speculating </td>
+		</tr>
+		<tr id="avg-time-row" hidden="true">
+			<td class="info-label">
+				Average Time: <br/>
+				<span class="info-label-extra"> (for this level) </span>
+			</td>
+			<td id="avg-time"> </td>
+		</tr>
+	</table>
+
+</body>
+
+
+</html>
+
