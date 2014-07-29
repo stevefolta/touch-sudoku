@@ -96,6 +96,24 @@ function handle_key(event) {
 		}
 }
 
+function handle_key_down(event) {
+	// Only used on Chrome, to work around a bug where the backspace key doesn't
+	// work.
+
+	if (!event)
+		event = window.event;
+
+	if (event.ctrlKey || event.altKey || event.metaKey)
+		return;
+
+	var key = event.keyCode;
+	if (key == 0)
+		key = event.which;
+	key = String.fromCharCode(key);
+	if (key == "\b")
+		handle_key(event);
+	}
+
 
 function digit_pressed(digit) {
 	if (selectedCell.getAttribute("given"))
@@ -821,6 +839,8 @@ function sudoker_start() {
 		document.captureEvents(Event.KEYPRESS);
 
 	document.onkeypress = handle_key;
+	if (window.chrome)
+		document.onkeydown = handle_key_down;
 	tick();
 
 	get_puzzle();
