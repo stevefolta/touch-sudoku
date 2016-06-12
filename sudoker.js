@@ -502,6 +502,28 @@ function install_puzzle(puzzle) {
 		else if (headerName == "Puzzle-Level") {
 			set_level(read_rest_of_line());
 			}
+		else if (headerName == "Date") {
+			var date_element = document.getElementById('puzzle-date');
+			if (date_element) {
+				// Convert from "2016-06-10" to "2016.6.10".
+				var date_parts = read_rest_of_line().split('-');
+				var date = '';
+				if (date_parts.length == 3) {
+					date = date_parts[0] + '.';
+					var part = date_parts[1];
+					if (part[0] == '0')
+						part = part.substr(1);
+					date += part + '.';
+					part = date_parts[2];
+					if (part[0] == '0')
+						part = part.substr(1);
+					date += part;
+					}
+				else
+					date = date_parts.join('-');
+				date_element.textContent = date;
+				}
+			}
 		else {
 			// Discard the rest of the line.
 			read_rest_of_line();
