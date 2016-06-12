@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+
+# Converts puzzles from the style of XML supplied by the krazydad.com daily
+# feed to the plain-text puzzle files used by Touch Sudoku.
+
+# You'll need a 'get-puzzles.settings' file in the same directory to specify
+# the URL and User-Agent for the feed, and optionally a path for the puzzle
+# files and a command to perform after the conversion.
+
+import urllib2, xml.etree.ElementTree, json, subprocess, sys
+
+url = ''
+user_agent = ''
+out_path = ''
+settings = {}
+with open("get-puzzles.settings", "r") as settings_file:
+	settings = json.load(settings_file)
+	url = settings['url']
+	user_agent = settings['user_agent']
+	out_path = settings.get('out_path', '')
+	if len(out_path) > 0:
+		out_path = out_path + '/'
+
+# Get the XML.
+request = urllib2.Request(url, headers={ 'User-Agent': user_agent })
+result = urllib2.urlopen(request).read()
+
+# Parse the XML and write the files.
+root = xml.etree.ElementTree.fromstring(result)
+date = root.attrib['date']
+files = []
+for puzzle in root.findall('puzzle'):
+	puzzle_id = puzzle.attrib['id']
+	puzz = puzzle.attrib['puzz']
+	answers = puzzle.attrib['answers']
+	level = puzzle.attrib['diff']
+	file_path = out_path + puzzle_id + '.puzzle'
+	with open(file_path, 'w') as puzzle_file:
+		puzzle_file.write('Puzzle-Level: ' + level + '\n')
+		puzzle_file.write('Answers: ' + answers + '\n')
+		puzzle_file.write('Date: ' + date + '\n')
+		puzzle_file.write('\n')
+		puzzle_file.write(puzz)
+		puzzle_file.write('\n')
+	files.append(file_path)
+
+# Post-cmd.
+if 'post_cmd' in settings:
+	args = []
+	for arg in settings['post_cmd']:
+		if arg == "$files":
+			for file_path in files:
+				args.append(file_path)
+		else:
+			args.append(arg)
+	subprocess.check_call(args)
+
+
+
+
