@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 # Converts puzzles from the style of XML supplied by the krazydad.com daily
 # feed to the plain-text puzzle files used by Touch Sudoku.
