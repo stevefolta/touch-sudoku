@@ -97,8 +97,8 @@ function handle_key(event) {
 }
 
 function handle_key_down(event) {
-	// Only used on Chrome, to work around a bug where the backspace key doesn't
-	// work.
+	// To work around a bug in Chrome -- and now Firefox, as of 2019.2 -- where
+	// the backspace key doesn't work.
 
 	if (!event)
 		event = window.event;
@@ -861,8 +861,7 @@ function sudoker_start() {
 		document.captureEvents(Event.KEYPRESS);
 
 	document.onkeypress = handle_key;
-	if (window.chrome)
-		document.onkeydown = handle_key_down;
+	document.onkeydown = handle_key_down;
 	tick();
 
 	get_puzzle();
