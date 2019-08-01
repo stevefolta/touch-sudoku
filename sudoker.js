@@ -1,6 +1,7 @@
 var puzzleSrc = "http://somefancy.com/touch-sudoku/puzzles/current.cgi";
 var requestCrossSite = false;
 var statsUrl = null;
+var testPuzzle = '';
 
 
 var grid = null;
@@ -589,6 +590,11 @@ function load_puzzle(puzzle)
 function get_puzzle()
 {
 	set_status("Loading...");
+
+	if (testPuzzle.length > 0) {
+		load_puzzle(testPuzzle);
+		return;
+		}
 
 	if (requestCrossSite) {
 		try {
