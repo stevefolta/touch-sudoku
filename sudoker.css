@@ -53,6 +53,13 @@ td[error][wrong] {
 	color: #FF8888;
 	}
 
+td[hilited_digit] {
+	background-color:	orange;
+	}
+td[hilited_digit][selected] {
+	background-color: darkorange;
+	}
+
 td[speculationStart] {
 	background-color: lightgreen;
 	}

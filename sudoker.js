@@ -18,6 +18,7 @@ var preSpeculationGrid = "";
 var speculationStartRow = 0;
 var speculationStartCol = 0;
 var digits = null;
+var hilitedDigit = 0;
 
 
 function handle_key(event) {
@@ -89,6 +90,12 @@ function handle_key(event) {
 				start_speculation();
 			handled = true;
 			break;
+		case "!":	case "@":	case "#":	case "$":	case "%":
+		case "^":	case "&":	case "*":	case "(":	case ")":
+			if (!winTime)
+				hilite_digit(")!@#$%^&*(".indexOf(key));
+			handled = true;
+			break;
 		}
 
 	if (handled) {
@@ -130,6 +137,7 @@ function digit_pressed(digit) {
 	selectedCell.removeAttribute("wrong");
 	check_pencil();
 	update_digits();
+	update_hilited_digits();
 }
 
 
@@ -174,6 +182,30 @@ function selected_cell_changed() {
 	selectedUsedKey = false;
 	update_digits();
 }
+
+
+function hilite_digit(digit) {
+	// Allow toggling.
+	if (digit == hilitedDigit)
+		digit = 0;
+	hilitedDigit = digit;
+	update_hilited_digits()
+	}
+
+
+function update_hilited_digits() {
+	digitString = hilitedDigit.toString();
+	for (var row = 0; row < 9; ++row) {
+		for (var col = 0; col < 9; ++col) {
+			var cell = grid[row][col];
+			var entry = cell.textContent;
+			if (entry.indexOf(digitString) >= 0)
+				cell.setAttribute("hilited_digit", "true");
+			else
+				cell.removeAttribute("hilited_digit");
+			}
+		}
+	}
 
 
 function check_puzzle() {
@@ -641,6 +673,8 @@ function clear_puzzle_answers_too(answers_too)
 				grid[row][col].removeAttribute("answer");
 			}
 		}
+	hilitedDigit = 0;
+	update_hilited_digits();
 }
 
 function clear_puzzle()
