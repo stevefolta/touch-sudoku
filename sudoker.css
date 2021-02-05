@@ -43,6 +43,25 @@ td.cell {
 	font-size: 150%;
 	}
 
+
+/* Light theme (by Drew Folta) */
+
+table.grid[theme="light"] {
+	border-width: 0;
+	}
+
+table.grid[theme="light"] table.box {
+	border-color: #EEE;
+	}
+
+table.grid[theme="light"] td.cell {
+	font-family: "Verdana";
+	border-color: #DDD;
+	}
+
+
+
+
 td[error] {
 	background-color: red;
 	}

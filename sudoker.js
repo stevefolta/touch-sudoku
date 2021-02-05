@@ -19,6 +19,9 @@ var speculationStartRow = 0;
 var speculationStartCol = 0;
 var digits = null;
 var hilitedDigit = 0;
+let whichTheme = 0;
+
+const themes = [ "regular", "light" ];
 
 
 function handle_key(event) {
@@ -94,6 +97,10 @@ function handle_key(event) {
 		case "^":	case "&":	case "*":	case "(":	case ")":
 			if (!winTime)
 				hilite_digit(")!@#$%^&*(".indexOf(key));
+			handled = true;
+			break;
+		case "t":
+			change_theme();
 			handled = true;
 			break;
 		}
@@ -429,6 +436,16 @@ function abort_speculation()
 	install_puzzle(preSpeculationGrid);
 	terminate_speculation();
 }
+
+
+function change_theme() {
+	let gridTable = document.getElementsByClassName("grid")[0];
+	whichTheme += 1;
+	if (whichTheme >= themes.length)
+		whichTheme = 0;
+	gridTable.setAttribute("theme", themes[whichTheme]);
+	localStorage.setItem("sudoku-theme", themes[whichTheme]);
+	}
 
 
 function install_puzzle(puzzle) {
@@ -903,6 +920,17 @@ function sudoker_start() {
 	document.onkeypress = handle_key;
 	document.onkeydown = handle_key_down;
 	tick();
+
+	// Restore the user's last theme.
+	let lastTheme = localStorage.getItem("sudoku-theme");
+	if (lastTheme) {
+		let index = themes.indexOf(lastTheme);
+		if (index >= 0) {
+			whichTheme = index;
+			let gridTable = document.getElementsByClassName("grid")[0];
+			gridTable.setAttribute("theme", themes[whichTheme]);
+			}
+		}
 
 	get_puzzle();
 }
