@@ -3,17 +3,23 @@
 # Converts puzzles from the style of XML supplied by the krazydad.com daily
 # feed to the plain-text puzzle files used by Touch Sudoku.
 
-# You'll need a 'get-puzzles.settings' file in the same directory to specify
-# the URL and User-Agent for the feed, and optionally a path for the puzzle
-# files and a command to perform after the conversion.
+# You'll need a 'get-puzzles.settings' file in the same directory (or a
+# settings file given as a command-line argument) to specify the URL and
+# User-Agent for the feed, and optionally a path for the puzzle files and a
+# command to perform after the conversion.
 
 import urllib2, xml.etree.ElementTree, json, subprocess, sys
 
 url = ''
 user_agent = ''
 out_path = ''
+
+# Read the settings.
+settings_path = "get-puzzles.settings"
+if len(sys.argv) > 1:
+	settings_path = sys.argv[1]
 settings = {}
-with open("get-puzzles.settings", "r") as settings_file:
+with open(settings_path, "r") as settings_file:
 	settings = json.load(settings_file)
 	url = settings['url']
 	user_agent = settings['user_agent']
