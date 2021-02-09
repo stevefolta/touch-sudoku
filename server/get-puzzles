@@ -22,7 +22,11 @@ settings = {}
 with open(settings_path, "r") as settings_file:
 	settings = json.load(settings_file)
 	url = settings['url']
-	user_agent = settings['user_agent']
+	if 'user_agent_path' in settings:
+		with open(settings['user_agent_path'], "r") as user_agent_file:
+			user_agent = user_agent_file.read().strip()
+	else:
+		user_agent = settings['user_agent']
 	out_path = settings.get('out_path', '')
 	if len(out_path) > 0:
 		out_path = out_path + '/'
