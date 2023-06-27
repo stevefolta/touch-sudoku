@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 # Converts puzzles from the style of XML supplied by the krazydad.com daily
 # feed to the plain-text puzzle files used by Touch Sudoku.
@@ -8,7 +8,7 @@
 # User-Agent for the feed, and optionally a path for the puzzle files and a
 # command to perform after the conversion.
 
-import urllib2, xml.etree.ElementTree, json, subprocess, sys
+import urllib.request, xml.etree.ElementTree, json, subprocess, sys, datetime
 
 url = ''
 user_agent = ''
@@ -21,7 +21,7 @@ if len(sys.argv) > 1:
 settings = {}
 with open(settings_path, "r") as settings_file:
 	settings = json.load(settings_file)
-	url = settings['url']
+	url = settings['url'].format(date=datetime.date.today().isoformat())
 	if 'user_agent_path' in settings:
 		with open(settings['user_agent_path'], "r") as user_agent_file:
 			user_agent = user_agent_file.read().strip()
@@ -32,8 +32,8 @@ with open(settings_path, "r") as settings_file:
 		out_path = out_path + '/'
 
 # Get the XML.
-request = urllib2.Request(url, headers={ 'User-Agent': user_agent })
-result = urllib2.urlopen(request).read()
+request = urllib.request.Request(url, headers={ 'User-Agent': user_agent })
+result = urllib.request.urlopen(request).read()
 
 # Parse the XML and write the files.
 root = xml.etree.ElementTree.fromstring(result)
