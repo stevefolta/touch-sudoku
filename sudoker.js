@@ -72,6 +72,7 @@ function handle_key(event) {
 		case "\b": 	// Backspace
 			if (!winTime && !selectedCell.getAttribute("given"))
 				selectedCell.textContent = "";
+				selectedCell.removeAttribute("hilited_digit");
 			handled = true;
 			break;
 		case "\r":  	// Enter
