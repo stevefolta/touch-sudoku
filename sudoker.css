@@ -98,6 +98,8 @@ td[pencil][selected] {
 	color: grey;
 	}
 td[pencil][many] {
+	width: 3.45em;
+	height: 3.45em;
 	font-size: 100%;
 	text-wrap: wrap;
 	overflow-wrap: anywhere;
