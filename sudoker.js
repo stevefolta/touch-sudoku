@@ -158,10 +158,15 @@ function check_pencil() {
 		if (contents < "1" || contents > "9")
 			pencilled = true;
 		}
-	if (pencilled)
+	if (pencilled) {
 		selectedCell.setAttribute("pencil", "true");
-	else
+		if (contents.length > 3)
+			selectedCell.setAttribute("many", "true");
+		}
+	else {
 		selectedCell.removeAttribute("pencil");
+		selectedCell.removeAttribute("many");
+		}
 }
 
 
@@ -490,10 +495,15 @@ function install_puzzle(puzzle) {
 					numChars += 1;
 					}
 				grid[row][col].removeAttribute("given");
-				if (numChars > 1)
+				if (numChars > 1) {
 					grid[row][col].setAttribute("pencil", "true");
-				else
+					if (numChars > 3)
+						grid[row][col].setAttribute("many", "true");
+					}
+				else {
 					grid[row][col].removeAttribute("pencil");
+					grid[row][col].removeAttribute("many");
+					}
 				advance = true;
 				}
 			if (advance) {
@@ -687,6 +697,7 @@ function clear_puzzle_answers_too(answers_too)
 			grid[row][col].removeAttribute("given");
 			grid[row][col].removeAttribute("error");
 			grid[row][col].removeAttribute("pencil");
+			grid[row][col].removeAttribute("many");
 			if (answers_too)
 				grid[row][col].removeAttribute("answer");
 			}

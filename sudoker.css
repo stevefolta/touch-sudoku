@@ -97,6 +97,11 @@ td[pencil] {
 td[pencil][selected] {
 	color: grey;
 	}
+td[pencil][many] {
+	font-size: 100%;
+	text-wrap: wrap;
+	overflow-wrap: anywhere;
+	}
 
 h1#title {
 	margin-bottom: 0;
