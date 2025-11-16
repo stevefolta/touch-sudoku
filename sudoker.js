@@ -382,6 +382,8 @@ function won() {
 			}
 		}
 	terminate_speculation();
+	hilitedDigit = 0;
+	update_hilited_digits();
 
 	set_status("Won");
 	update_time();
