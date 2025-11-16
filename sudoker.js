@@ -743,6 +743,11 @@ function get_puzzle()
 		load_puzzle(testPuzzle);
 		return;
 		}
+	const game_prefix = "?game=";
+	if (window.location.search.startsWith(game_prefix)) {
+		load_puzzle(window.location.search.slice(game_prefix.length));
+		return;
+		}
 
 	if (requestCrossSite) {
 		try {
