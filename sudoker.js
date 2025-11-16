@@ -110,6 +110,12 @@ function handle_key(event) {
 			break;
 		}
 
+	if ((key >= "a" && key <= "z") || (key >= "A" && key <= "Z")) {
+		// Still block it so it doesn't start a search.  It was probably pressed by
+		// accident.
+		handled = true;
+		}
+
 	if (handled) {
 		event.preventDefault();
 		event.stopPropagation();
