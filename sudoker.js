@@ -104,6 +104,10 @@ function handle_key(event) {
 			change_theme();
 			handled = true;
 			break;
+		case "a":
+			auto_fill();
+			handled = true;
+			break;
 		}
 
 	if (handled) {
@@ -417,7 +421,6 @@ function is_speculating()
 	return (preSpeculationGrid ? true : false);
 }
 
-
 function start_speculation()
 {
 	preSpeculationGrid = puzzle_string();
@@ -427,7 +430,6 @@ function start_speculation()
 	document.getElementById("speculation").removeAttribute("hidden");
 }
 
-
 function terminate_speculation()
 {
 	grid[speculationStartRow][speculationStartCol].removeAttribute("speculationStart");
@@ -435,13 +437,91 @@ function terminate_speculation()
 	preSpeculationGrid = "";
 }
 
-
 function abort_speculation()
 {
 	clear_puzzle_answers_too(false);
 	install_puzzle(preSpeculationGrid);
 	terminate_speculation();
 }
+
+
+function auto_fill() {
+	for (let row = 0; row < 9; ++row) {
+		for (let col = 0; col < 9; ++col) {
+			let entry = grid[row][col].textContent;
+			if (entry.length == 1)
+				continue;
+			let possibilities = (1 << 10) - 1;
+
+			// Check this box.
+			let boxRow = Math.floor(row / 3);
+			let boxCol = Math.floor(col / 3);
+			for (let cellRow = 0; cellRow < 3; ++cellRow) {
+				for (let cellCol = 0; cellCol < 3; ++cellCol) {
+					let globalRow = boxRow * 3 + cellRow;
+					let globalCol = boxCol * 3 + cellCol;
+					if (globalRow == row && globalCol == col)
+						continue;
+					let digit = digitAt(globalRow, globalCol);
+					if (digit >= 0)
+						possibilities &= ~(1 << digit);
+					}
+				}
+
+			// Check the row.
+			for (let cellCol = 0; cellCol < 9; ++cellCol) {
+				if (cellCol == col)
+					continue;
+				let digit = digitAt(row, cellCol);
+				if (digit >= 0)
+					possibilities &= ~(1 << digit);
+				}
+			// Check the column.
+			for (let cellRow = 0; cellRow < 9; ++cellRow) {
+				if (cellRow == row)
+					continue;
+				let digit = digitAt(cellRow, col);
+				if (digit >= 0)
+					possibilities &= ~(1 << digit);
+				}
+
+			// Update the cell.
+			let ok = true;
+			if (entry.length > 1) {
+				// Remove non-possibilities.
+				let curPencils = 0;
+				for (c of entry) {
+					if (c < "1" && c > "9") {
+						ok = false;
+						break;
+						}
+					curPencils |= 1 << parseInt(c) - 1;
+					}
+				possibilities &= curPencils;
+				}
+			else {
+				// Empty cell, use all the possibilities.
+				}
+			let newCell = "";
+			for (let digit = 0; digit < 9; ++digit) {
+				if ((possibilities & (1 << digit)) != 0)
+					newCell += String.fromCharCode(digit + 1 + 48);
+				}
+			grid[row][col].textContent = newCell;
+			if (newCell.length > 1) {
+				grid[row][col].setAttribute("pencil", "true");
+				if (newCell.length > 3)
+					grid[row][col].setAttribute("many", "true");
+				else
+					grid[row][col].removeAttribute("many");
+				}
+			else {
+				grid[row][col].removeAttribute("pencil");
+				grid[row][col].removeAttribute("many");
+				}
+			}
+		}
+	}
 
 
 function change_theme() {
