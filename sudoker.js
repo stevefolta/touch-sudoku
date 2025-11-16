@@ -521,6 +521,8 @@ function auto_fill() {
 				}
 			}
 		}
+
+	update_hilited_digits();
 	}
 
 
