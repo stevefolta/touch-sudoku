@@ -92,6 +92,7 @@ function handle_key(event) {
 				abort_speculation();
 			else
 				start_speculation();
+			selectedUsedKey = false;
 			handled = true;
 			break;
 		case "!":	case "@":	case "#":	case "$":	case "%":
